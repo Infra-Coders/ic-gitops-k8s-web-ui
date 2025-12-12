@@ -30,8 +30,8 @@ _KUBECONFIG=$(basename ${KUBECONFIG})
 podman run --rm -it \
   -p 8443:8443 \
   -v ${PWD}:/podman \
-  -e "KUBECONFIG=/root/.kube/${_KUBECONFIG}" \
-  -v ~/.aws:/root/.aws \
-  -v ~/.kube:/root/.kube \
+  -e "KUBECONFIG=/home/${USER}/.kube/${_KUBECONFIG}" \
+  -v ~/.aws:/home/${USER}/.aws \
+  -v ~/.kube:/home/${USER}/.kube \
   ic-podman-runtime:latest \
   kubectl -n kubernetes-dashboard port-forward --address 0.0.0.0 svc/kubernetes-dashboard 8443:443

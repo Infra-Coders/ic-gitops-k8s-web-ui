@@ -43,7 +43,23 @@ echo "---------------------------------------------------"
 echo "Your token is saved in: dashboard_token.txt"
 echo ""
 echo "HOW TO CONNECT:"
-echo "1. Run: podman_kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard 8443:443"
+echo "1. Run the following command:"
+echo ""
+
+# Użycie cat << 'EOF' zapobiega interpretacji zmiennych wewnątrz bloku
+cat << 'EOF'
+_KUBECONFIG=$(basename ${KUBECONFIG})
+podman run --rm -it \
+  -p 8443:8443 \
+  -v ${PWD}:/podman \
+  -e "KUBECONFIG=/home/${USER}/.kube/${_KUBECONFIG}" \
+  -v ~/.aws:/home/${USER}/.aws \
+  -v ~/.kube:/home/${USER}/.kube \
+  ic-podman-runtime:latest \
+  kubectl -n kubernetes-dashboard port-forward --address 0.0.0.0 svc/kubernetes-dashboard 8443:443
+EOF
+
+echo ""
 echo "2. Open: https://localhost:8443"
 echo "   (Accept the security warning in browser)"
 echo "3. Log in with the token."
