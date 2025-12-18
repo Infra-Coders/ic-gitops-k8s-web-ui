@@ -1,1 +1,0 @@
-# ic-k8s-web-ui
